@@ -7,7 +7,6 @@
 int arr_size;
 int show_orige_arr;//是否输出排序前的数组，1输出
 int show_result_arr;//是否输出排序后的数组，1输出
-int create_arr_method;//设置数组初始化方式，1为随机，2为顺序，3为逆序。
 
 int orige_arr[arr_size1];
 int sort_arr[arr_size1];
@@ -24,27 +23,8 @@ clock_t start_time,end_time;//计时
 void show_result()
 {
     int k=0;
-    FILE *fp=fopen("sort.txt","a+");
-    fseek(fp,0,SEEK_END);
-    fprintf(fp,"数组大小为:%d\n",arr_size);
-    switch (create_arr_method)
-    {
-    case 1:
-        fprintf(fp,"数组的初始化方式为:随机生成\n");
-        break;
-    case 2:
-        fprintf(fp,"数组的初始化方式为:顺序生成\n");
-        break;
-    case 3:
-        fprintf(fp,"数组的初始化方式为:逆序生成\n");
-        break;
-    default:
-        break;
-    }
-
     for(k=0;k<sort_method_number;k++)
     {
-        fprintf(fp,"%s\t的时间为:%f\t交换的次数为%lld\t比较的次数为:%lld\n",show_sort_list[k],time_list[k],swap_list[k],compare_list[k]);
         printf("%s\t的时间为:%f\t交换的次数为%lld\t比较的次数为:%lld",show_sort_list[k],time_list[k],swap_list[k],compare_list[k]);
         printf("\n");
     }
@@ -406,12 +386,11 @@ void prepare()
     }
 }
 
-void start(int show_orige_arr_prepare,int show_result_arr_prepare,int arr_size_prepare,int create_arr_method_prepare)
+void start(int show_orige_arr_prepare,int show_result_arr_prepare,int arr_size_prepare,int create_arr_method)
 {
     show_orige_arr=show_orige_arr_prepare;
     show_result_arr=show_result_arr_prepare;
     arr_size=arr_size_prepare;
-    create_arr_method=create_arr_method_prepare;
     printf("数组大小：%d\n",arr_size_prepare);
     printf("初始化方式:%d\n",create_arr_method);
     prepare();
@@ -448,26 +427,19 @@ void start(int show_orige_arr_prepare,int show_result_arr_prepare,int arr_size_p
 
 int main()
 {
-    int show_orige_arr_prepare=0,show_result_arr_prepare=0,create_arr_method_prepare,arr_size_preparea;
-    int i=0;
-    for(i=0;i<10;i++)
-    {
-            printf("请输入数组大小(0-1000000):");
+    int show_orige_arr_prepare,show_result_arr_prepare,create_arr_method,arr_size_preparea;
+    printf("请输入数组大小(0-1000000):");
     scanf("%d",&arr_size_preparea);
-    // printf("请输入是否显示原数组(0不显示,1显示):");
-    // scanf("%d",&show_orige_arr_prepare);
-    // putchar('\n');
-    // printf("是否显示排序后的数组(0不显示,1显示):");
-    // scanf("%d",&show_result_arr_prepare);
-    // putchar('\n');
-    printf("请选择创建数组的方式\n1:随机生成\n2:顺序生成\n3:倒序生成\n");
-    scanf("%d",&create_arr_method_prepare);
+    printf("请输入是否显示原数组(0不显示,1显示):");
+    scanf("%d",&show_orige_arr_prepare);
     putchar('\n');
-    start(show_orige_arr_prepare,show_result_arr_prepare,arr_size_preparea, create_arr_method_prepare);
-    scanf("是否继续:0为继续,1为退出%d",&i);
-    }
-    return 0;
-
+    printf("是否显示排序后的数组(0不显示,1显示):");
+    scanf("%d",&show_result_arr_prepare);
+    putchar('\n');
+    printf("请选择创建数组的方式\n1:随机生成\n2:顺序生成\n3:倒序生成\n");
+    scanf("%d",&create_arr_method);
+    putchar('\n');
+    start(show_orige_arr_prepare,show_result_arr_prepare,arr_size_preparea, create_arr_method);
 }
 
 
