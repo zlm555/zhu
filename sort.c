@@ -413,9 +413,9 @@ void start(int show_orige_arr_prepare,int show_result_arr_prepare,int arr_size_p
     {
         show_arr(orige_arr);
     }
-    operate(insert_sort,0);
-    operate(bubble_sort,1);
-    operate(choose_sort,2);
+    // operate(insert_sort,0);
+    // operate(bubble_sort,1);
+    // operate(choose_sort,2);
     operate(shell_sort,3);
     operate(quick_sort,4);
     operate(merge_sort,5);
