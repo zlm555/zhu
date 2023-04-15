@@ -7,6 +7,7 @@
 int arr_size;
 int show_orige_arr;//是否输出排序前的数组，1输出
 int show_result_arr;//是否输出排序后的数组，1输出
+int create_arr_method;
 
 int orige_arr[arr_size1];
 int sort_arr[arr_size1];
@@ -23,11 +24,32 @@ clock_t start_time,end_time;//计时
 void show_result()
 {
     int k=0;
+    FILE *fp;
+    fp=fopen("sort.txt","a");
+    fseek(fp,0,SEEK_END);
+    fprintf(fp,"数组大小：%d\n",arr_size);
+    switch (create_arr_method)
+    {
+    case 1:
+        fprintf(fp,"初始化方式:随机生成\n");
+        break;
+    case 2:
+        fprintf(fp,"初始化方式:顺序生成\n");
+        break;
+    case 3:
+        fprintf(fp,"初始化方式:逆序生成\n");
+        break;
+    default:
+        break;
+    }
     for(k=0;k<sort_method_number;k++)
     {
         printf("%s\t的时间为:%f\t交换的次数为%lld\t比较的次数为:%lld",show_sort_list[k],time_list[k],swap_list[k],compare_list[k]);
+        fprintf(fp,"%s\t的时间为:%f\t交换的次数为%lld\t比较的次数为:%lld",show_sort_list[k],time_list[k],swap_list[k],compare_list[k]);
+        fprintf(fp,"\n");
         printf("\n");
     }
+    fclose(fp);
 }
 void swap(int *a,int *b,int method_index)
 {
@@ -112,7 +134,7 @@ void operate(void(*sort)(int),int method_index)
     start_time=clock();
     sort(method_index);
     end_time=clock();
-    sort_times=((double)(end_time - start_time) / CLOCKS_PER_SEC)*1000;
+    sort_times=((double)(end_time - start_time) / CLOCKS_PER_SEC);
 
     time_list[method_index]=sort_times;
     if(show_result_arr!=0)
@@ -225,7 +247,8 @@ void shell_sort(int method_index)
 //快速排序算法(通过栈来实现)
 void quick_sort(int method_index)
 {
-    int stack[arr_size];
+    int *stack;
+    stack=(int *)malloc(arr_size*sizeof(int ));
     int top=-1;
     int left,right;
     left=0,right=arr_size-1;
@@ -296,7 +319,8 @@ void merge_sort_recursive(int arr[],int temp_arr[],int left, int right, int meth
     merge(arr, left, mid, right,temp_arr,method_index);
 }
 void merge_sort(int method_index) {
-    int temp_arr[arr_size];
+    int *temp_arr;
+    temp_arr=(int *)malloc(arr_size*sizeof(int ));
     merge_sort_recursive(sort_arr, temp_arr, 0, arr_size - 1,method_index);
 }
 
@@ -386,8 +410,9 @@ void prepare()
     }
 }
 
-void start(int show_orige_arr_prepare,int show_result_arr_prepare,int arr_size_prepare,int create_arr_method)
+void start(int show_orige_arr_prepare,int show_result_arr_prepare,int arr_size_prepare,int create_arr_method_prepare)
 {
+    create_arr_method=create_arr_method_prepare;
     show_orige_arr=show_orige_arr_prepare;
     show_result_arr=show_result_arr_prepare;
     arr_size=arr_size_prepare;
