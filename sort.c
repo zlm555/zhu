@@ -1,16 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#define arr_size1 1000000
-#define MAXSIEZ 100000000
+#define MAXSIEZ 10000000 //能创建的数组最大值
 #define sort_method_number 8
+#define write_file 1     //是否将结果写入文件中
 int arr_size;
 int show_orige_arr;//是否输出排序前的数组，1输出
 int show_result_arr;//是否输出排序后的数组，1输出
 int create_arr_method;
 
-int orige_arr[arr_size1];
-int sort_arr[arr_size1];
+int orige_arr[MAXSIEZ];
+int sort_arr[MAXSIEZ];
 
 long long compare_list[sort_method_number];
 long long swap_list[sort_method_number];
@@ -24,32 +24,41 @@ clock_t start_time,end_time;//计时
 void show_result()
 {
     int k=0;
-    FILE *fp;
-    fp=fopen("sort.txt","a");
-    fseek(fp,0,SEEK_END);
-    fprintf(fp,"数组大小：%d\n",arr_size);
-    switch (create_arr_method)
+    if(write_file)
     {
-    case 1:
-        fprintf(fp,"初始化方式:随机生成\n");
-        break;
-    case 2:
-        fprintf(fp,"初始化方式:顺序生成\n");
-        break;
-    case 3:
-        fprintf(fp,"初始化方式:逆序生成\n");
-        break;
-    default:
-        break;
+        FILE *fp;
+        fp=fopen("sort.txt","a");
+        fseek(fp,0,SEEK_END);
+        fprintf(fp,"数组大小：%d\n",arr_size);
+        switch (create_arr_method)
+        {
+            case 1:
+            fprintf(fp,"初始化方式:随机生成\n");
+            break;
+            case 2:
+                fprintf(fp,"初始化方式:顺序生成\n");
+                break;
+            case 3:
+                fprintf(fp,"初始化方式:逆序生成\n");
+                break;
+            default:
+                break;
+        }
     }
     for(k=0;k<sort_method_number;k++)
     {
         printf("%s\t的时间为:%f\t交换的次数为%lld\t比较的次数为:%lld",show_sort_list[k],time_list[k],swap_list[k],compare_list[k]);
-        fprintf(fp,"%s\t的时间为:%f\t交换的次数为%lld\t比较的次数为:%lld",show_sort_list[k],time_list[k],swap_list[k],compare_list[k]);
-        fprintf(fp,"\n");
+        if(write_file)
+        {
+            fprintf(fp,"%s\t的时间为:%f\t交换的次数为%lld\t比较的次数为:%lld",show_sort_list[k],time_list[k],swap_list[k],compare_list[k]);
+            fprintf(fp,"\n");
+        }
         printf("\n");
     }
-    fclose(fp);
+    if(write_file)
+    {
+        fclose(fp);
+    }
 }
 void swap(int *a,int *b,int method_index)
 {
@@ -237,7 +246,7 @@ void shell_sort(int method_index)
                     }
 
                 }
-                sort_arr[b+gap]=temp;
+                swap(&sort_arr[b+gap],&temp,method_index);
             }
         }
     }
@@ -453,7 +462,7 @@ void start(int show_orige_arr_prepare,int show_result_arr_prepare,int arr_size_p
 int main()
 {
     int show_orige_arr_prepare,show_result_arr_prepare,create_arr_method,arr_size_preparea;
-    printf("请输入数组大小(0-1000000):");
+    printf("请输入数组大小(0-10000000):");
     scanf("%d",&arr_size_preparea);
     printf("请输入是否显示原数组(0不显示,1显示):");
     scanf("%d",&show_orige_arr_prepare);
